@@ -1,6 +1,7 @@
 // Függőségek importálása
 const express = require('express');
 const mysql = require('mysql2/promise');
+require('dotenv').config(); // .env fájl betöltése
 const cors = require('cors'); // CORS csomag importálása
 
 // Express alkalmazás inicializálása
@@ -17,11 +18,11 @@ const PORT = process.env.PORT || 3001;
 
 // MySQL kapcsolat létrehozása (Connection Pool)
 const dbPool = mysql.createPool({
-    host: 'localhost',      // Adatbázis szerver címe   
-    user: 'root',         // Adatbázis felhasználónév
-    password: '', // Adatbázis jelszó
-    database: 'users', // Adatbázis név   
-    port: 3307,            // Adatbázis port
+    host: process.env.DB_HOST || 'localhost',      // Adatbázis szerver címe   
+    user: process.env.DB_USER || 'root',         // Adatbázis felhasználónév
+    password: process.env.DB_PASSWORD || '', // Adatbázis jelszó
+    database: process.env.DB_NAME || 'users', // Adatbázis név   
+    port: process.env.DB_PORT || 3306,            // Adatbázis port
 });
 
 // Alap útvonal (route)
@@ -59,6 +60,11 @@ app.get('/api/users', async (req, res) => {
 app.post('/api/users', async (req, res) => {
     try {
         const { name, email } = req.body;
+
+        if (!name || !email) {
+            return res.status(400).json({ error: 'A név és az email mező kitöltése kötelező.' });
+        }
+
         const sql = "INSERT INTO users (name, email) VALUES (?, ?)";
         const [result] = await dbPool.query(sql, [name, email]);
         res.status(201).json({ message: "Felhasználó sikeresen hozzáadva", id: result.insertId });
