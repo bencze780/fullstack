@@ -1,7 +1,7 @@
 // Függőségek importálása
 const express = require('express');
 const mysql = require('mysql2/promise');
-require('dotenv').config(); // .env fájl betöltése
+require('dotenv').config();
 const cors = require('cors'); // CORS csomag importálása
 const { exec } = require('child_process'); // A parancssori tesztek futtatásához
 
@@ -48,8 +48,8 @@ app.get('/ping', async (req, res) => {
 // READ (GET): Minden felhasználó lekérdezése
 app.get('/api/users', async (req, res) => {
     try {
-        const sqlQuery = "SELECT id, name, email, created_at FROM users";
-        const [rows] = await dbPool.query(sqlQuery);
+        const query = "SELECT id, name, email, created_at FROM users";
+        const [rows] = await dbPool.query(query);
         res.json(rows);
     } catch (error) {
         console.error("Hiba a lekérdezés során: ", error);
@@ -66,8 +66,8 @@ app.post('/api/users', async (req, res) => {
             return res.status(400).json({ error: 'A név és az email mező kitöltése kötelező.' });
         }
 
-        const sql = "INSERT INTO users (name, email) VALUES (?, ?)";
-        const [result] = await dbPool.query(sql, [name, email]);
+        const query = "INSERT INTO users (name, email) VALUES (?, ?)";
+        const [result] = await dbPool.query(query, [name, email]);
         res.status(201).json({ message: "Felhasználó sikeresen hozzáadva", id: result.insertId });
     } catch (error) {
         console.error("Hiba a beszúrás során: ", error);
@@ -85,13 +85,13 @@ app.patch('/api/users/:id', async (req, res) => {
             return res.status(400).json({ error: 'A név és az email mező kitöltése kötelező a módosításhoz.' });
         }
 
-        const sql = "UPDATE users SET name = ?, email = ? WHERE id = ?";
-        const [result] = await dbPool.query(sql, [name, email, id]);
+        const query = "UPDATE users SET name = ?, email = ? WHERE id = ?";
+        const [result] = await dbPool.query(query, [name, email, id]);
 
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: 'A felhasználó nem található.' });
         }
-        res.json({ message: "Felhasználó sikeresen módosítva", id: id });
+        res.json({ message: "Felhasználó sikeresen módosítva", id });
     } catch (error) {
         console.error("Hiba a módosítás során: ", error);
         res.status(500).json({ error: 'Adatbázis hiba történt a módosításkor.' });
@@ -102,13 +102,13 @@ app.patch('/api/users/:id', async (req, res) => {
 app.delete('/api/users/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const sql = "DELETE FROM users WHERE id = ?";
-        const [result] = await dbPool.query(sql, [id]);
+        const query = "DELETE FROM users WHERE id = ?";
+        const [result] = await dbPool.query(query, [id]);
 
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: 'A felhasználó nem található.' });
         }
-        res.json({ message: "Felhasználó sikeresen törölve", id: id });
+        res.json({ message: "Felhasználó sikeresen törölve", id });
     } catch (error) {
         console.error("Hiba a törlés során: ", error);
         res.status(500).json({ error: 'Adatbázis hiba történt a törléskor.' });
@@ -118,11 +118,14 @@ app.delete('/api/users/:id', async (req, res) => {
 // --- TESZT FUTTATÓ VÉGPONT ---
 app.post('/api/run-tests', (req, res) => {
     const { type } = req.body;
-    let command = 'npm test'; // Alapértelmezett: összes teszt
 
-    if (type === 'sum') command = 'npm run test:sum';
-    if (type === 'unit') command = 'npm run test:unit';
-    if (type === 'integration') command = 'npm run test:integration';
+    const commands = {
+        sum: 'npm run test:sum',
+        unit: 'npm run test:unit',
+        integration: 'npm run test:integration'
+    };
+    
+    const command = commands[type] || 'npm test'; // Alapértelmezett: összes teszt
 
     // Parancs futtatása (a cwd mondja meg, hogy a backend mappában fusson le)
     exec(command, { cwd: __dirname, maxBuffer: 1024 * 1024 * 5 }, (error, stdout, stderr) => {

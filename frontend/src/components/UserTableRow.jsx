@@ -8,7 +8,7 @@ function UserTableRow({ user, isEditing, onEditStart, onEditCancel, onUpdate, on
     useEffect(() => {
         setEditedName(user.name);
         setEditedEmail(user.email);
-    } , [user.name, user.email]);
+    }, [user.name, user.email]);
 
     const handleUpdate = () => {
         if (!editedName || !editedEmail) {
@@ -28,14 +28,14 @@ function UserTableRow({ user, isEditing, onEditStart, onEditCancel, onUpdate, on
                         <input
                             type="text"
                             value={editedName}
-                            onChange={e => setEditedName(e.target.value)}
+                            onChange={(e) => setEditedName(e.target.value)}
                         />
                     </td>
                     <td className="table-cell">
                         <input
                             type="email"
                             value={editedEmail}
-                            onChange={e => setEditedEmail(e.target.value)}
+                            onChange={(e) => setEditedEmail(e.target.value)}
                         />
                     </td>
                 </>

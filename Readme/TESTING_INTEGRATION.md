@@ -1,15 +1,15 @@
 # 🔗 Integrációs Tesztek Részletes Útmutatója
 
-## Mi az a Integrációs Teszt?
+## Mi az az Integrációs Teszt?
 
-Az **integrációs teszt** több komponens **valóban együtt működéséhez szükséges teszt**, **valódi adatbázissal**, nem mockolt objektumokkal.
+Az **integrációs teszt** több komponens **valós együttműködését vizsgáló teszt**, **valódi adatbázissal**, nem mockolt objektumokkal.
 
 ### Jellemzői:
 - 🗄️ **Valódi Adatbázis** - Nem mock, hanem ténylegesen a DB-t használja
 - 🔗 **Komponensek Közötti Kommunikáció** - Több része működik együtt
-- 📊 **Teljes Munkafolyamat** - A teljes lánc működít
+ - 📊 **Teljes Munkafolyamat** - A teljes láncot működteti
 - ⏱️ **Lassabb** - Sokkal tovább tart, mint unit tesztek
-- 🎯 **Nagyobb Konfidencia** - Tudjuk, hogy valóban működik-e
+ - 🎯 **Nagyobb Bizonyosság** - Tudjuk, hogy valóban működik-e
 
 ---
 
@@ -25,11 +25,11 @@ Az **integrációs teszt** több komponens **valóban együtt működéséhez sz
 | **Valódiság** | Szimulált | Valós |
 | **Debug** | Könnyű | Nehéz |
 | **Sikere** | 99%+ | 95%+ |
-| **Célja** | Egy funkció | Teljes munkafo. |
+| **Célja** | Egy funkció | Teljes munkafolyamat |
 
 ---
 
-## 📁 A Projekt Integrációs Teszte
+## 📁 A Projekt Integrációs Tesztjei
 
 ### Fájl: `backend/tests/integration/server.integration.test.js`
 
@@ -185,7 +185,7 @@ test('GET /api/users - Ellenőrzés', async () => {
 #### 🔄 Mi történik?
 
 1. **Előfeltételek**:
-   - Korában mentettük a `testUserId`-t az 1. teszt során
+   - Korábban mentettük a `testUserId`-t az 1. teszt során
    - Ez hivatkozik arra az ID-ra
 
 2. **Kérés**: GET `/api/users` (összes felhasználó)
@@ -208,7 +208,7 @@ test('GET /api/users - Ellenőrzés', async () => {
 
 5. **Teszt Ellenőrzése**:
    ```javascript
-   // Megnézik: van-e olyan user, akinek az ID = testUserId?
+   // Megnézzük: van-e olyan user, akinek az ID = testUserId?
    res.body.some(u => u.id === testUserId)  // true
    ```
 
@@ -266,10 +266,10 @@ test('DELETE /api/users/:id - Takarítás', async () => {
 
 #### 🧹 Miért Törlünk?
 
-- **Takarítás**: Nem maradnak felesleges teszttek az adatbázisban
+- **Takarítás**: Nem maradnak felesleges tesztadatok az adatbázisban
 - **Izolálás**: Következő futáskor tiszta állapot
 - **Adatbázis Méret**: Nem növekszik végtelenül
-- **Jó Gyakorlat**: Lemezügyelés
+- **Jó Gyakorlat**: Lemezterület kímélése
 
 ---
 
@@ -388,13 +388,13 @@ SELECT * FROM users;
 |-----|---------|----------------------|-----------|
 | 1   | János   | janos@example.com    | 2024-...  |
 | 5   | Péter   | peter@example.com    | 2024-...  |
-<!-- 42 már nem van! -->
+<!-- 42 már nincs ott! -->
 
 ---
 
-## 🐛 Adatbázis Érvelésből Adódó Problémák
+## 🐛 Adatbázis Elérésből Adódó Problémák
 
-### Probléma 1: Adatbázis Nincs Futva
+### Probléma 1: Adatbázis Nem Fut
 
 ```
 Error: connect ECONNREFUSED 127.0.0.1:3306
@@ -562,7 +562,7 @@ mysql -u root -p
 # Adatbázis választása
 USE fullstack;
 
-# Összes user tekintése
+- # Összes user megtekintése
 SELECT * FROM users;
 
 # Egy user törléséhez, hogy tiszta legyen:

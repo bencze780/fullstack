@@ -10,7 +10,6 @@ jest.mock('mysql2/promise', () => ({
 
 const request = require('supertest');
 const app = require('../../server'); // Két szinttel feljebb van a server.js
-const mysql = require('mysql2/promise');
 
 describe('Unit Tesztek (Mockolt)', () => {
 

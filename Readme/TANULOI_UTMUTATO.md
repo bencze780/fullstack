@@ -226,6 +226,6 @@ Gratulálok! Végigmentél egy teljes veremű alkalmazás felépítésén. Megta
 
 1.  Hozhatsz létre egy adat-vezérelt backend API-t.
 2.  Építhetsz fel egy dinamikus, komponens-alapú frontendet.
-3.  Kösse össze a kettőt, hogy egy működő, interaktív alkalmazást kapj.
+3.  Kötheted össze a kettőt, hogy egy működő, interaktív alkalmazást kapj.
 
 Ez egy kiváló alap a további tanuláshoz. Innen tovább lehet lépni például a felhasználói authentikáció, a fejlettebb állapotkezelés vagy a felhőbe való telepítés irányába.

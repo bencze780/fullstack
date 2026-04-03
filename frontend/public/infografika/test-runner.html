@@ -116,7 +116,7 @@ test('összeadja a 10 + 5-öt, hogy 15-öt kapjunk', () => {
 
                 const data = await response.json();
                 // A Jest a kimenetét gyakran a stderr-be írja, így mindkettőt megjelenítjük
-                outputEl.textContent = data.output || 'Nincs megjeleníthető kimenet.';
+                outputEl.textContent = data.output || 'Nincs megjeleníthető kimenet. (Lehet, hogy a tesztek csendben, sikeresen lefutottak!)';
             } catch (error) {
                 outputEl.textContent = '❌ Hiba történt a szerverhez való kapcsolódáskor:\n' + error.message + '\n\nEllenőrizd, hogy a backend szerver fut-e!';
             } finally {

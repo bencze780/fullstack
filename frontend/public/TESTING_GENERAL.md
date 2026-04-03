@@ -316,9 +316,9 @@ Ez megmutatja, hogy a kódod hány százaléka van tesztelve:
 A: Hosszú távon sokkal több időt takarít meg, mint amit rá fordítunk.
 
 **Q: Mikor írok teszteket?**
-A: A kód megírása közben vagy után - a "TDD" módszer a megírása előtt.
+A: A kód megírása közben vagy után - a "TDD" módszer esetén megírás előtt.
 
-**Q: Mi a различие unit és integrációs tesztek között?**
+**Q: Mi a különbség a unit és az integrációs tesztek között?**
 A: Az unit gyors de izolált, az integrációs lassabb de reális.
 
 ---

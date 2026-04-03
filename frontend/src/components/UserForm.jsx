@@ -22,14 +22,14 @@ function UserForm({ onAddUser, isSubmitting }) {
                 type="text"
                 placeholder="Név"
                 value={name}
-                onChange={e => setName(e.target.value)}
+                onChange={(e) => setName(e.target.value)}
                 disabled={isSubmitting}
             />
             <input
                 type="email"
                 placeholder="Email"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 disabled={isSubmitting}
             />
             <button type="submit" disabled={isSubmitting}>

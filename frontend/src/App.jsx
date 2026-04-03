@@ -16,7 +16,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/tanuloi-utmutato" element={<CoursePage fileName="TANULOI_UTMUTATO" />} />
-            <Route path="/mvc-magyarat" element={<CoursePage fileName="MVC_MAGYARAZAT" />} />
+            <Route path="/mvc-magyarazat" element={<CoursePage fileName="MVC_MAGYARAZAT" />} />
             <Route path="/fogalmak-crud" element={<CoursePage fileName="FOGALMAK_CRUD_FULLSTACK" />} />
             <Route path="/teszteles-altalanos" element={<CoursePage fileName="TESTING_GENERAL" />} />
             <Route path="/hasznalt-modulok" element={<CoursePage fileName="USED_MODULES" />} />
@@ -26,7 +26,6 @@ function App() {
             <Route path="/docs-userform" element={<CoursePage fileName="DOCS_UserForm_component" />} />
             <Route path="/docs-usertable" element={<CoursePage fileName="DOCS_UserTable_component" />} />
             <Route path="/docs-usertablerow" element={<CoursePage fileName="DOCS_UserTableRow_component" />} />
-           
           </Routes>
         </div>
 

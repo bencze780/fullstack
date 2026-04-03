@@ -42,10 +42,10 @@ function HomePage() {
     }, []);
 
     // CREATE: Új felhasználó hozzáadása
-    const handleAddUser = async ({ name, email }) => {
+    const handleAddUser = async (userData) => {
         setIsSubmitting(true);
         try {
-            await axios.post(API_URL, { name, email });
+            await axios.post(API_URL, userData);
             fetchData(); // Frissítés
         } catch (err) {
             console.error('Hiba az adatok küldésekor:', err);
