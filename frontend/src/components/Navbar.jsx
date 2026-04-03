@@ -34,7 +34,8 @@ const Navbar = () => {
                 <li><NavLink to="/fogalmak-crud" onClick={closeNavbar}>CRUD & Fullstack</NavLink></li>
                 <li><NavLink to="/teszteles-altalanos" onClick={closeNavbar}>Tesztelés</NavLink></li>
                 <li><NavLink to="/hasznalt-modulok" onClick={closeNavbar}>Használt Modulok</NavLink></li>
-                
+                <li><a href="/infografika/index.html" target="_blank" rel="noopener noreferrer" onClick={closeNavbar}>Infografikák 📊</a></li>
+        
                 <li className="dropdown">
                     <a href="#" className="dropdown-toggle" onClick={toggleDropdown}>
                         Komponens doksik {dropdownOpen ? '▲' : '▼'}
@@ -45,9 +46,11 @@ const Navbar = () => {
                             <li><NavLink to="/docs-userform" onClick={closeNavbar}>UserForm</NavLink></li>
                             <li><NavLink to="/docs-usertable" onClick={closeNavbar}>UserTable</NavLink></li>
                             <li><NavLink to="/docs-usertablerow" onClick={closeNavbar}>UserTableRow</NavLink></li>
+                            
                         </ul>
                     )}
                 </li>
+                
             </ul>
         </nav>
     );

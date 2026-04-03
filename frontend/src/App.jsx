@@ -5,6 +5,7 @@ import HomePage from './components/HomePage';
 import CoursePage from './components/CoursePage';
 import './App.css';
 
+
 function App() {
   return (
     <Router>
@@ -25,6 +26,7 @@ function App() {
             <Route path="/docs-userform" element={<CoursePage fileName="DOCS_UserForm_component" />} />
             <Route path="/docs-usertable" element={<CoursePage fileName="DOCS_UserTable_component" />} />
             <Route path="/docs-usertablerow" element={<CoursePage fileName="DOCS_UserTableRow_component" />} />
+           
           </Routes>
         </div>
 
