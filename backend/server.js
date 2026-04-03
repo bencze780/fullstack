@@ -3,6 +3,7 @@ const express = require('express');
 const mysql = require('mysql2/promise');
 require('dotenv').config(); // .env fájl betöltése
 const cors = require('cors'); // CORS csomag importálása
+const { exec } = require('child_process'); // A parancssori tesztek futtatásához
 
 // Express alkalmazás inicializálása
 const app = express();
@@ -112,6 +113,27 @@ app.delete('/api/users/:id', async (req, res) => {
         console.error("Hiba a törlés során: ", error);
         res.status(500).json({ error: 'Adatbázis hiba történt a törléskor.' });
     }
+});
+
+// --- TESZT FUTTATÓ VÉGPONT ---
+app.post('/api/run-tests', (req, res) => {
+    const { type } = req.body;
+    let command = 'npm test'; // Alapértelmezett: összes teszt
+
+    if (type === 'sum') command = 'npm run test:sum';
+    if (type === 'unit') command = 'npm run test:unit';
+    if (type === 'integration') command = 'npm run test:integration';
+
+    // Parancs futtatása (a cwd mondja meg, hogy a backend mappában fusson le)
+    exec(command, { cwd: __dirname, maxBuffer: 1024 * 1024 * 5 }, (error, stdout, stderr) => {
+        // A Jest sokszor a stderr-be írja a sikeres tesztek eredményét is
+        const combinedOutput = stdout + '\n' + stderr;
+        
+        res.json({
+            success: !error,
+            output: combinedOutput
+        });
+    });
 });
 
 // App exportálása teszteléshez és pool referencia
