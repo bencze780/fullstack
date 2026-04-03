@@ -1,126 +1,56 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './App.css'; 
-import UserForm from './components/UserForm';
-import UserTable from './components/UserTable';
-import './css/UserComponents.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import HomePage from './components/HomePage';
+import CoursePage from './components/CoursePage';
+import './App.css';
 
-// API alap URL központosítása
-const API_URL = 'http://localhost:3001/api/users';
 function App() {
-    // --- STATE VÁLTOZÓK ---
+  return (
+    <Router>
+      <div className="App container-lg mt-3 d-flex flex-column min-vh-100">
+        <Navbar />
 
-    // READ ÉS HIBAKEZELÉS
-    const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true); // Kezdeti betöltés
-    const [isSubmitting, setIsSubmitting] = useState(false); // Adatküldés (Create/Update) közbeni állapot
-    const [error, setError] = useState(null);
-    
-    // UPDATE (SZERKESZTÉS)
-    const [editingId, setEditingId] = useState(null); 
-
-    // --- FUNKCIÓK ---
-
-    // Adatok lekérdezésének funkciója
-    const fetchData = async () => {
-        setLoading(true);
-        try {
-            const response = await axios.get(API_URL);
-            setUsers(response.data);
-            setError(null);
-        } catch (err) {
-            console.error("Hiba az adatok lekérésekor:", err);
-            setError(err.response?.data?.error || "Nem sikerült betölteni az adatokat. Ellenőrizze, hogy a backend szerver fut-e.");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // Adatok lekérése a komponens betöltésekor
-    useEffect(() => {
-        fetchData(); 
-    }, []);
-
-    // CREATE: Új felhasználó hozzáadása
-    const handleAddUser = async ({ name, email }) => {
-        setIsSubmitting(true);
-        try {
-            await axios.post(API_URL, { name, email });
-            fetchData(); // Frissítés
-        } catch (err) {
-            console.error('Hiba az adatok küldésekor:', err);
-            setError(err.response?.data?.error || "Hiba történt a felhasználó hozzáadása közben.");
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
-
-    // DELETE: Felhasználó törlése
-    const handleDelete = async (id) => {
-        if (!window.confirm(`Biztosan törölni szeretnéd a(z) ${id} ID-jű felhasználót?`)) {
-            return;
-        }
-        try {
-            await axios.delete(`${API_URL}/${id}`);
-            fetchData();
-        } catch (err) {
-            console.error("Hiba a törléskor:", err);
-            setError(err.response?.data?.error || "Nem sikerült törölni a felhasználót.");
-        }
-    };
-    
-    // UPDATE: Szerkesztési mód elindítása
-    const handleEditStart = (user) => {
-        setEditingId(user.id); 
-    };
-
-    // UPDATE: Módosítás elküldése
-    const handleUpdate = async (id, updatedData) => {
-        try {
-            await axios.patch(`${API_URL}/${id}`, updatedData);
-            setEditingId(null);
-            fetchData();
-        } catch (err) {
-            console.error("Hiba a módosításkor:", err); 
-            setError(err.response?.data?.error || "Nem sikerült módosítani a felhasználót.");
-        }
-    };
-    
-    // Szerkesztés megszakítása
-    const handleEditCancel = () => {
-        setEditingId(null);
-    };
-
-
-    // --- RENDERELÉS ---
-
-    // Feltételes renderelés: Betöltés és Hiba
-    if (loading) {
-        return <div className="App"><p>Adatok betöltése...</p></div>;
-    }
-    if (error) {
-        return <div className="App"><p style={{ color: 'red' }}>{error}</p></div>;
-    }
-
-    // JSX Visszatérés
-    return (
-        <div className="App">
-            <h1>Felhasználókezelő (Full-Stack CRUD)</h1>
-            
-            <UserForm onAddUser={handleAddUser} isSubmitting={isSubmitting} />
-            
-            <hr />
-            
-            <UserTable 
-                users={users}
-                editingId={editingId}
-                onEditStart={handleEditStart}
-                onEditCancel={handleEditCancel}
-                onUpdate={handleUpdate}
-                onDelete={handleDelete}
-            />
+        <div className="content-wrapper flex-grow-1">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/tanuloi-utmutato" element={<CoursePage fileName="TANULOI_UTMUTATO" />} />
+            <Route path="/mvc-magyarat" element={<CoursePage fileName="MVC_MAGYARAZAT" />} />
+            <Route path="/fogalmak-crud" element={<CoursePage fileName="FOGALMAK_CRUD_FULLSTACK" />} />
+            <Route path="/teszteles-altalanos" element={<CoursePage fileName="TESTING_GENERAL" />} />
+            <Route path="/hasznalt-modulok" element={<CoursePage fileName="USED_MODULES" />} />
+            <Route path="/unit-tesztek" element={<CoursePage fileName="TESTING_UNIT" />} />
+            <Route path="/integracios-tesztek" element={<CoursePage fileName="TESTING_INTEGRATION" />} />
+            <Route path="/docs-app" element={<CoursePage fileName="DOCS_App_component" />} />
+            <Route path="/docs-userform" element={<CoursePage fileName="DOCS_UserForm_component" />} />
+            <Route path="/docs-usertable" element={<CoursePage fileName="DOCS_UserTable_component" />} />
+            <Route path="/docs-usertablerow" element={<CoursePage fileName="DOCS_UserTableRow_component" />} />
+          </Routes>
         </div>
-    );
-} 
+
+        {/* Állandó lábléc: Ajánlott irodalom és készítő */}
+        <footer className="mt-5 mb-3 p-4 bg-light rounded border text-center">
+          <div className="mb-3">
+            <h5 className="text-secondary mb-3">📚 Ajánlott oldalak (Felhasznált irodalom)</h5>
+            <ul className="list-inline mb-0">
+              <li className="list-inline-item"><a href="https://react.dev/" target="_blank" rel="noopener noreferrer" className="text-decoration-none fw-bold">React</a></li>
+              <li className="list-inline-item text-muted">|</li>
+              <li className="list-inline-item"><a href="https://nodejs.org/en/docs/" target="_blank" rel="noopener noreferrer" className="text-decoration-none fw-bold">Node.js</a></li>
+              <li className="list-inline-item text-muted">|</li>
+              <li className="list-inline-item"><a href="https://expressjs.com/" target="_blank" rel="noopener noreferrer" className="text-decoration-none fw-bold">Express</a></li>
+              <li className="list-inline-item text-muted">|</li>
+              <li className="list-inline-item"><a href="https://dev.mysql.com/doc/" target="_blank" rel="noopener noreferrer" className="text-decoration-none fw-bold">MySQL</a></li>
+              <li className="list-inline-item text-muted">|</li>
+              <li className="list-inline-item"><a href="https://vitejs.dev/guide/" target="_blank" rel="noopener noreferrer" className="text-decoration-none fw-bold">Vite</a></li>
+            </ul>
+          </div>
+          <div>
+            <small className="text-muted">Készítette: Bencze István &copy; {new Date().getFullYear()}</small>
+          </div>
+        </footer>
+      </div>
+    </Router>
+  );
+}
 
 export default App;
