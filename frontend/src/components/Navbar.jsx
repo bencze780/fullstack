@@ -30,7 +30,7 @@ const Navbar = () => {
 
             <ul className={`navbar-links ${expanded ? 'active' : ''}`}>
                 <li><NavLink to="/tanuloi-utmutato" onClick={closeNavbar}>Tanulói Útmutató</NavLink></li>
-                <li><NavLink to="/mvc-magyarat" onClick={closeNavbar}>MVC Magyarázat</NavLink></li>
+                <li><NavLink to="/mvc-magyarazat" onClick={closeNavbar}>MVC Magyarázat</NavLink></li>
                 <li><NavLink to="/fogalmak-crud" onClick={closeNavbar}>CRUD & Fullstack</NavLink></li>
                 <li><NavLink to="/teszteles-altalanos" onClick={closeNavbar}>Tesztelés</NavLink></li>
                 <li><NavLink to="/hasznalt-modulok" onClick={closeNavbar}>Használt Modulok</NavLink></li>
