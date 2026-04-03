@@ -18,11 +18,11 @@ const PORT = process.env.PORT || 3001;
 
 // MySQL kapcsolat létrehozása (Connection Pool)
 const dbPool = mysql.createPool({
-    host: process.env.DB_HOST || 'localhost',      // Adatbázis szerver címe   
-    user: process.env.DB_USER || 'root',         // Adatbázis felhasználónév
-    password: process.env.DB_PASSWORD || '', // Adatbázis jelszó
-    database: process.env.DB_NAME || 'users', // Adatbázis név   
-    port: process.env.DB_PORT || 3306,            // Adatbázis port
+    host: process.env.DB_HOST,      // Adatbázis szerver címe
+    user: process.env.DB_USER,         // Adatbázis felhasználónév
+    password: process.env.DB_PASSWORD, // Adatbázis jelszó
+    database: process.env.DB_NAME, // Adatbázis név
+    port: process.env.DB_PORT,            // Adatbázis port
 });
 
 // Alap útvonal (route)
@@ -114,8 +114,14 @@ app.delete('/api/users/:id', async (req, res) => {
     }
 });
 
+// App exportálása teszteléshez és pool referencia
+app.pool = dbPool;
 
-// Szerver indítása
-app.listen(PORT, () => {
-  console.log(`A szerver fut a http://localhost:${PORT} címen`);
-});
+module.exports = app;
+
+// Szerver indítása csak ha közvetlenül futtatjuk (nem import-ként)
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`A szerver fut a http://localhost:${PORT} címen`);
+  });
+}
